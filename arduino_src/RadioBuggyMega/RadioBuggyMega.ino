@@ -190,8 +190,12 @@ void loop() {
   // find the new steering angle, if available
   if(g_steering_rx.Available()) {
     watchdog_feed();
+<<<<<<< HEAD
     raw_angle = g_steering_rx.GetAngle();
     smoothed_angle = convert_rc_to_steering(raw_angle);
+=======
+    smoothed_angle = receiver_get_steering(AIL_INDEX);
+>>>>>>> d524b0b4103f2abd31295f3926fb6af20c569ee5
     steer_angle = filter_loop(&ail_state, smoothed_angle);
   }
 
