@@ -8,3 +8,5 @@ out/
 # arduino build files
 build-*
 surface_src/java_src/Alice/src/com/roboclub/robobuggy/main/config.java
+
+surface_src/java_src/libs/jfreechart-fse/
