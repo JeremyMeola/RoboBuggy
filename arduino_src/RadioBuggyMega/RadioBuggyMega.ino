@@ -50,8 +50,10 @@
 // Calibration values
 #define WATCHDOG_THRESH_MS 1000
 #define STEERING_CENTER 133
-#define VOLTAGE_READ_NUMERATOR 5L
-#define VOLTAGE_READ_DENOMINATOR 13312L // 1024 * 13
+#define VOLTAGE_READ_NUMER 5L
+#define VOLTAGE_READ_DENOM 1023L 
+#define VDIV_RESISTOR_ONE 1600 //ohms. The resistor from ground on the voltage divder
+#define VDIV_RESISTOR_TWO 10000 //ohms. Resistor from battery on voltage divider
 
 // Global state
 unsigned long timer = 0L;
@@ -149,14 +151,14 @@ int convert_rc_to_steering(int rc_angle) {
 
 /*
 Return the current battery voltage in mV. The battery is connected to the ADC
-through a 10k ohm / 16k ohm divider, so the value sensed is 10/26 = 5/13 of the
+through a 10k ohm / 1.6k ohm divider, so the value sensed is 1.6/11.6 of the
 true value. The value returned is a 10-bit (1023 max) value compared to 5 volts.
 */
-unsigned long get_current_voltage() {
+ unsigned long get_current_voltage() {
   int analog_report = analogRead(VOLTAGE_READ_PIN);
   //use an unsigned long because floats are expensive
   unsigned long actual_voltage =
-    (analog_report * VOLTAGE_READ_NUMERATOR) / (VOLTAGE_READ_DENOMINATOR);
+    (analog_report*1000*VOLTAGE_READ_NUMER*(VDIV_RESISTOR_ONE + VDIV_RESISTOR_TWO)) / (VDIV_RESISTOR_ONE*VOLTAGE_READ_DENOM);
   return actual_voltage;
 }
 
